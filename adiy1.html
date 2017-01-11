@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Angular JS</title>
+  </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+
+  <script>
+    var nameApp = angular.module('nameApp', []);
+    nameApp.controller('NameCtrl', function($scope){
+      $scope.nameOfThing = "Lizza";
+
+      $scope.$watch('lastNameOfThing', function(newValue, oldValue){
+        console.log('new value is' + newValue);
+      });
+
+      setTimeOut(function(){
+        $scope.lastNameOfThing = "Reyes";
+        $scope.$apply();
+      }, 1000);
+    });
+  </script>
+  <body>
+    name of thing: <input ng-model:"nameOfThing" type:"text"/>
+    <br>
+    last name of thing: <input ng-model:"lastNameOfThing" type:"text"/>
+    <br>
+    hello {{nameOfThing}} {{lastNameOfThing}}
+  </body>
+</html>

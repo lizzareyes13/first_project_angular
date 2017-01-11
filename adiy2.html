@@ -1,0 +1,66 @@
+//example taken from 19.html
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Angular JS example 2</title>
+    <script>
+      var countryApp = angular.module('countryApp', []);
+      countryApp.controller('countryCtrl', ['$scope', '$http', function($scope){
+        $scope.countries=[
+          {"name":"china", "population": 3245623234},
+          {"name":"India", "population": 4398548939848},
+          {"name":"South Korea", "population": 89248948}
+        ];
+      })];
+
+      countryApp.config(function($routeProvider){
+        $routeProvider.
+        when('/', {
+          templateController: 'country-list.html',
+          controller: 'CountryListCtrl'
+        }).
+        when('/:countryName', {
+          templateUrl:'counry-detail.html',
+          controller:'CountryDetailCtrl'
+        }).
+        otherwise({
+          redirectTo: '/'
+        });
+      });
+      countryApp.factory('countries', function($http){
+        return{
+          list: function(callback){
+            $http.get("countriesGDP.json").success(callback);
+          },
+          find:function(name, callback){
+            $http.get("countriesGDP.json").success(function(data){
+              var country = data.filter(function(entry){
+                return entry.name == name;
+              })[0];
+              callback(country);
+            });
+          }
+        };
+      });
+      countryApp.controller("CountryListCtrl", function($scope, countries){
+        countries.list(function(countries){
+          $scope.countries = countries;
+        });
+      });
+      country.App("CountryListCtrl", function($scope, $routeParams, countries){
+        countries.find($routeParams.countryName, function(country){
+          $scope.country = country;
+        });
+      });
+    </script>
+  </head>
+  <body ng-controller="countryCtrl">
+    <div ng-view></div>
+    Search
+
+
+
+  </body>
+</html>
